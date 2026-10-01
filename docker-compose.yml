@@ -1,6 +1,6 @@
 services:
   m3terstate-indexer:
-    build: .
+    image: ghcr.io/michaelchristwin/m3terstate-indexer:${IMAGE_TAG}
     restart: unless-stopped
 
     depends_on:
