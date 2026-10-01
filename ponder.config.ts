@@ -7,8 +7,10 @@ export default createConfig({
     sepolia: {
       id: sepolia.id,
       rpc: process.env.PONDER_RPC_URL_1!,
+      ethGetLogsBlockRange: 10_000,
     },
   },
+
   contracts: {
     RollupContract: {
       chain: "sepolia",

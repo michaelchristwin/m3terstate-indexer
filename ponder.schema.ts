@@ -1,6 +1,6 @@
 import { onchainTable, primaryKey, index } from "ponder";
 
-export const states = onchainTable("states", (t) => ({
+export const state = onchainTable("state", (t) => ({
   chainLength: t.bigint().primaryKey(),
   sender: t.hex().notNull(),
   anchorBlock: t.hex().notNull(),
@@ -9,8 +9,8 @@ export const states = onchainTable("states", (t) => ({
   blockTime: t.bigint().notNull(),
 }));
 
-export const meterStates = onchainTable(
-  "meter_states",
+export const meterState = onchainTable(
+  "meter_state",
   (t) => ({
     chainLength: t.bigint().notNull(),
     meterNo: t.integer().notNull(),

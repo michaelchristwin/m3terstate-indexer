@@ -1,5 +1,5 @@
 import { ponder } from "ponder:registry";
-import { states, meterStates } from "ponder:schema";
+import { state, meterState } from "ponder:schema";
 import { bytesToChunks } from "./utils/bytes";
 
 ponder.on("RollupContract:NewState", async ({ event, context }) => {
@@ -14,7 +14,7 @@ ponder.on("RollupContract:NewState", async ({ event, context }) => {
     );
   }
 
-  await context.db.insert(states).values({
+  await context.db.insert(state).values({
     chainLength,
     sender: from,
     anchorBlock,
@@ -23,7 +23,7 @@ ponder.on("RollupContract:NewState", async ({ event, context }) => {
     blockTime: event.block.timestamp,
   });
 
-  await context.db.insert(meterStates).values(
+  await context.db.insert(meterState).values(
     accounts.map((account, i) => ({
       chainLength,
       meterNo: i,
