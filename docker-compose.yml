@@ -16,6 +16,7 @@ services:
       - "127.0.0.1:42069:42069"
 
     networks:
+      - public
       - private
 
     healthcheck:
@@ -53,6 +54,7 @@ services:
       retries: 10
 
 networks:
+  public:
   private:
     internal: true
 
