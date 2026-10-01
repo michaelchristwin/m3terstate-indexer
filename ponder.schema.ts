@@ -1,24 +1,44 @@
-import { onchainTable, primaryKey, index } from "ponder";
+import { onchainTable, primaryKey, index, relations } from "ponder";
 
-export const state = onchainTable("state", (t) => ({
-  chainLength: t.bigint().primaryKey(),
-  sender: t.hex().notNull(),
-  anchorBlock: t.hex().notNull(),
-  txHash: t.hex().notNull(),
-  blockNumber: t.bigint().notNull(),
-  blockTime: t.bigint().notNull(),
-}));
-
-export const meterState = onchainTable(
-  "meter_state",
+export const commit = onchainTable(
+  "commits",
   (t) => ({
     chainLength: t.bigint().notNull(),
+    txHash: t.hex().notNull(),
+    blockTime: t.bigint().notNull(),
+    blockNumber: t.bigint().notNull(),
+    sender: t.hex().notNull(),
+  }),
+  (table) => ({
+    pk: primaryKey({ columns: [table.chainLength, table.txHash] }),
+    timeIdx: index().on(table.blockTime),
+  }),
+);
+
+export const meterState = onchainTable(
+  "meter_states",
+  (t) => ({
+    chainLength: t.bigint().notNull(),
+    txHash: t.hex().notNull(),
     meterNo: t.integer().notNull(),
-    account: t.bigint().notNull(), // raw, in 1e-6 units
+    account: t.bigint().notNull(),
     nonce: t.bigint().notNull(),
   }),
   (table) => ({
-    pk: primaryKey({ columns: [table.chainLength, table.meterNo] }),
+    pk: primaryKey({
+      columns: [table.chainLength, table.txHash, table.meterNo],
+    }),
     meterIdx: index().on(table.meterNo),
   }),
 );
+
+export const commitsRelations = relations(commit, ({ many }) => ({
+  state: many(meterState),
+}));
+
+export const meterStatesRelations = relations(meterState, ({ one }) => ({
+  commit: one(commit, {
+    fields: [meterState.chainLength, meterState.txHash],
+    references: [commit.chainLength, commit.txHash],
+  }),
+}));
