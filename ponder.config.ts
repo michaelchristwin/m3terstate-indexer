@@ -1,12 +1,17 @@
 import { createConfig } from "ponder";
-import { RollupContractAbi } from "./abis/RollupContractAbi";
 import { sepolia } from "viem/chains";
+import { env } from "./src/config/env";
+import { RollupContractAbi } from "./abis/RollupContractAbi";
 
 export default createConfig({
+  database: {
+    kind: "postgres",
+    connectionString: env.DATABASE_URL,
+  },
   chains: {
     sepolia: {
       id: sepolia.id,
-      rpc: process.env.PONDER_RPC_URL_1!,
+      rpc: env.PONDER_RPC_URL_11155111,
       ethGetLogsBlockRange: 10_000,
     },
   },
