@@ -11,8 +11,8 @@ export default createConfig({
   chains: {
     sepolia: {
       id: sepolia.id,
-      rpc: env.PONDER_RPC_URL_11155111,
-      ethGetLogsBlockRange: 10_000,
+      rpc: [env.PONDER_RPC_URL_11155111],
+      ethGetLogsBlockRange: 5_000,
     },
   },
 
