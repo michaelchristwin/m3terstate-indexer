@@ -10,7 +10,7 @@ export const commit = onchainTable(
     sender: t.hex().notNull(),
   }),
   (table) => ({
-    pk: primaryKey({ columns: [table.chainLength, table.txHash] }),
+    pk: primaryKey({ columns: [table.txHash] }),
     timeIdx: index().on(table.blockTime),
   }),
 );
@@ -26,7 +26,7 @@ export const meterState = onchainTable(
   }),
   (table) => ({
     pk: primaryKey({
-      columns: [table.chainLength, table.txHash, table.meterNo],
+      columns: [table.txHash, table.meterNo],
     }),
     meterIdx: index().on(table.meterNo),
   }),
