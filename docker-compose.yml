@@ -9,7 +9,7 @@ services:
 
     environment:
       DATABASE_URL: postgresql://ponder:${POSTGRES_PASSWORD}@db:5432/m3terstate-index
-      DATABASE_SCHEMA: public
+      DATABASE_SCHEMA: ${DATABASE_SCHEMA}
       PONDER_RPC_URL_11155111: ${PONDER_RPC_URL_11155111}
       PONDER_RPC_URL_2: ${PONDER_RPC_URL_2}
       PONDER_RPC_URL_3: ${PONDER_RPC_URL_3}
