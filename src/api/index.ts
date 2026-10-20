@@ -5,14 +5,11 @@ import { swaggerUI } from "@hono/swagger-ui";
 import { client, desc, graphql } from "ponder";
 import { commitSchema } from "./models/commit";
 
-const v1 = new OpenAPIHono();
 const app = new OpenAPIHono();
 
 app.use("/sql/*", client({ db, schema }));
 app.use("/", graphql({ db, schema }));
 app.use("/graphql", graphql({ db, schema }));
-
-app.route("/api/v1", v1);
 
 const latestCommitRoute = createRoute({
   method: "get",
@@ -25,6 +22,8 @@ const latestCommitRoute = createRoute({
     404: { description: "No commits yet" },
   },
 });
+
+const v1 = new OpenAPIHono();
 
 v1.openapi(latestCommitRoute, async (c) => {
   const latestCommit = await db.query.commit.findFirst({
@@ -48,5 +47,6 @@ v1.doc("/openapi.json", {
 });
 
 v1.get("/docs", swaggerUI({ url: "/openapi.json" }));
+app.route("/api/v1", v1);
 
 export default app;
