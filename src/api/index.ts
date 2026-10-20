@@ -1,5 +1,5 @@
 import { db } from "ponder:api";
-import schema, { meterState } from "ponder:schema";
+import schema, { commit } from "ponder:schema";
 import { OpenAPIHono, createRoute } from "@hono/zod-openapi";
 import { swaggerUI } from "@hono/swagger-ui";
 import { client, desc, graphql } from "ponder";
@@ -25,11 +25,11 @@ const latestCommitRoute = createRoute({
 });
 
 app.openapi(latestCommitRoute, async (c) => {
-  const commit = await db.query.meterState.findFirst({
-    orderBy: [desc(meterState.chainLength)],
+  const latestCommit = await db.query.commit.findFirst({
+    orderBy: [desc(commit.chainLength)],
   });
-  if (!commit) return c.json(null, 404);
-  return c.json(commit, 200);
+  if (!latestCommit) return c.json(null, 404);
+  return c.json(latestCommit, 200);
 });
 
 app.doc("/openapi.json", {
