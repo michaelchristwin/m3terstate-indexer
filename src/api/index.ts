@@ -5,12 +5,14 @@ import { swaggerUI } from "@hono/swagger-ui";
 import { client, desc, graphql } from "ponder";
 import { commitSchema } from "./models/commit";
 
+const v1 = new OpenAPIHono();
 const app = new OpenAPIHono();
 
 app.use("/sql/*", client({ db, schema }));
-
 app.use("/", graphql({ db, schema }));
 app.use("/graphql", graphql({ db, schema }));
+
+app.route("/api/v1", v1);
 
 const latestCommitRoute = createRoute({
   method: "get",
@@ -24,19 +26,27 @@ const latestCommitRoute = createRoute({
   },
 });
 
-app.openapi(latestCommitRoute, async (c) => {
+v1.openapi(latestCommitRoute, async (c) => {
   const latestCommit = await db.query.commit.findFirst({
     orderBy: [desc(commit.chainLength)],
   });
   if (!latestCommit) return c.json(null, 404);
-  return c.json(latestCommit, 200);
+  return c.json(
+    {
+      ...latestCommit,
+      blockNumber: latestCommit.blockNumber.toString(),
+      blockTime: latestCommit.blockTime.toString(),
+      chainLength: latestCommit.chainLength.toString(),
+    },
+    200,
+  );
 });
 
-app.doc("/openapi.json", {
+v1.doc("/openapi.json", {
   openapi: "3.0.0",
   info: { title: "M3terstate Indexer", version: "1.0.0" },
 });
 
-app.get("/docs", swaggerUI({ url: "/openapi.json" }));
+v1.get("/docs", swaggerUI({ url: "/openapi.json" }));
 
 export default app;
