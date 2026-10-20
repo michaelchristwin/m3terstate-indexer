@@ -12,6 +12,8 @@
     "typecheck": "tsc"
   },
   "dependencies": {
+    "@hono/swagger-ui": "^0.6.1",
+    "@hono/zod-openapi": "^1.6.3",
     "hono": "^4.5.0",
     "ponder": "^0.17.12",
     "viem": "2.35.0",
