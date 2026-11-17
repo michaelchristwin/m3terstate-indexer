@@ -62,7 +62,7 @@ v1.doc("/openapi.json", {
   info: { title: "M3terstate Indexer", version: "1.0.0" },
 });
 
-v1.get("/docs", swaggerUI({ url: "api/v1/openapi.json" }));
+v1.get("/docs", swaggerUI({ url: "/api/v1/openapi.json" }));
 app.route("/api/v1", v1);
 
 export default app;

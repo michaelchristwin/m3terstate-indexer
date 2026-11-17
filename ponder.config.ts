@@ -5,7 +5,7 @@ import { RollupContractAbi } from "./abis/RollupContractAbi";
 
 export default createConfig({
   database: {
-    kind: "postgres",
+    kind: env.DATABASE_KIND,
     connectionString: env.DATABASE_URL,
   },
   chains: {
@@ -17,6 +17,7 @@ export default createConfig({
         env.PONDER_RPC_URL_3,
       ],
       ethGetLogsBlockRange: 5_000,
+      pollingInterval: 1_000 * 60 * 30,
     },
   },
 
@@ -24,7 +25,7 @@ export default createConfig({
     RollupContract: {
       chain: "sepolia",
       abi: RollupContractAbi,
-      address: "0xf8f2d4315DB5db38f3e5c45D0bCd59959c603d9b",
+      address: env.ROLLUP_SMART_CONTRACT,
       startBlock: 9166232,
     },
   },

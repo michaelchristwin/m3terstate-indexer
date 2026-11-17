@@ -3,9 +3,9 @@ import { bigintString, txHashSchema } from "./shared";
 
 export const m3terstateSchema = z
   .object({
-    chainLength: bigintString,
     txHash: txHashSchema,
     meterNo: z.int().nonnegative(),
+    chainLength: bigintString,
     account: bigintString,
     nonce: bigintString,
   })
